@@ -1,0 +1,51 @@
+/*Styles for Crystals game*/
+
+
+body {
+    background-image: url("../images/starwars.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    margin:auto;
+    color: white;
+}
+
+.pictureBox {
+  background-color: white;
+  display: inline-block;
+  width: 180px;
+  height: 140px;
+  color: darkblue;
+  border-color: black;
+  border-width: 1px;
+  border-style: solid;
+}
+
+.boxData{
+  margin: 0 auto;
+
+}
+
+.instructionList {
+  padding: 0px;
+}
+
+.imgChar {
+  display: inline-block;
+  width: 150px;
+  height: 100px;
+
+}
+
+.attackButton {
+  margin-top: 75px;
+}
+
+.fightClass {
+  margin: 30px 0px;
+}
+
+.fightHeader {
+  margin-top: 0;
+  padding-left: 0;
+}
