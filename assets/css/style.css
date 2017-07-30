@@ -10,6 +10,11 @@ body {
     color: white;
 }
 
+.charRow {
+  height: 150px;
+
+}
+
 .pictureBox {
   background-color: white;
   display: inline-block;
@@ -48,5 +53,5 @@ body {
 .fightHeader {
   margin-top: 0;
   padding-left: 0;
-  height: 200px;
+  height: 200px ;
 }

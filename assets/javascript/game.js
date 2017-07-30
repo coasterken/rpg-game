@@ -16,23 +16,24 @@ var heroCounterAttackPower = 0
 var enemyHealthPoints = 0;
 var enemyAttackPower = 0;
 var enemyCounterAttackPower = 0;
+var remainingCharacters = 0;
 
 var character = {
   leia: {healthPoints: 120,
          attackPower: 10,
-         counterAttackPower: 40
+         counterAttackPower: 5
         },
   hans: {healthPoints: 100,
-         attackPower: 8,
+         attackPower: 15,
          counterAttackPower: 30
         },        
   jth: {healthPoints: 110,
          attackPower: 5,
-         counterAttackPower: 15
+         counterAttackPower: 5
         },
   darth: {healthPoints: 80,
          attackPower: 7,
-         counterAttackPower: 20
+         counterAttackPower: 5
         }
 }
 
@@ -80,10 +81,6 @@ loadFunction();
     //decrease hero hp by enemy attack power
     heroHealthPoints-= enemyCounterAttackPower;
 
-    //increase hero total AP by base attack power
-    heroAttackPowerGrow+= heroAttackPower;
-
-    console.log()
     //update display hero
     $(".heroBox #" + ourHero + "Health").html(heroHealthPoints);
 
@@ -91,20 +88,33 @@ loadFunction();
     $(".enemyBox #" + ourEnemy + "Health").html(enemyHealthPoints);
 
     if (heroHealthPoints <= 0) {
-      // enemy wins
+      // enemy wins - restart game
         $(".heroMsg").html("You have been defeated...Game Over!!!");
         $(".enemyMsg").html("");
         // $(".heroBox #" + ourHero + "Box").addClass("hide");
         // $(".enemyBox #" + ourEnemy + "Box").addClass("hide");
         $(".restart").removeClass("hide");
+        readyForAttack = false;
         return;
 
     } else if (enemyHealthPoints <= 0 ) {
-        //hero wins - display message, hide enemy
+        //hero wins - display message
+
+        $(".enemyBox #" + ourEnemy + "Box").remove();
+
+        if (remainingCharacters === 0) {
+          //hero wins game
+          $(".enemyMsg").html("");
+          $(".heroMsg").html("You won!  Game Over!!!");
+          $(".restart").removeClass("hide");
+          readyForAttack = false;
+          return;
+        }
+
         $(".heroMsg").html("Awesome! You defeated " + ourEnemy + ".  Select another enemy.");
         $(".enemyMsg").html("");
-        $(".enemyBox #" + ourEnemy + "Box").remove();
         readyForAttack = false;
+        return;
 
     } else {
 
@@ -114,17 +124,18 @@ loadFunction();
       //enemy message
       $(".enemyMsg").html( ourEnemy + " attacked you for " + enemyCounterAttackPower + " damage.");
 
+       //increase hero total AP by base attack power
+       heroAttackPowerGrow+= heroAttackPower;
     }
    }) // *********** end of attack button
  
     // ********* restart
-    $(".restart").on("click", function() {
+  $(".restart").on("click", function() {
 
-      loadFunction();
-      $(".restart").addClass("hide");
+    loadFunction();
+    $(".restart").addClass("hide");
 
-
-     })
+   })
  //********************************* 
 //**********   functions
 //**********************************
@@ -134,6 +145,13 @@ function loadFunction() {
   $(".instructions").html("Select a Hero");
   heroNeeded = true;
   readyForAttack = false;
+  remainingCharacters = 0;
+  // count the number of characters in the object
+  for (var player in character) {
+      if (character.hasOwnProperty(player)) {
+       remainingCharacters++;
+      }
+  }
 
   //Load up chars with initial health
   $.each(character, function(key, value) {
@@ -172,6 +190,8 @@ function getCharData(charType, charName) {
     enemyAttackPower = character[charName].attackPower;
     enemyCounterAttackPower = character[charName].counterAttackPower;    
   }
+
+  remainingCharacters--;
 
 }  //*********** end of getCharData
 
