@@ -18,21 +18,21 @@ var enemyAttackPower = 0;
 var enemyCounterAttackPower = 0;
 
 var character = {
-  leia: {healthPoints: 10,
+  leia: {healthPoints: 120,
          attackPower: 10,
-         counterAttackPower: 10
-        },
-  hans: {healthPoints: 20,
-         attackPower: 20,
-         counterAttackPower: 20
-        },        
-  jth: {healthPoints: 30,
-         attackPower: 30,
-         counterAttackPower: 30
-        },
-  darth: {healthPoints: 40,
-         attackPower: 40,
          counterAttackPower: 40
+        },
+  hans: {healthPoints: 100,
+         attackPower: 8,
+         counterAttackPower: 30
+        },        
+  jth: {healthPoints: 110,
+         attackPower: 5,
+         counterAttackPower: 15
+        },
+  darth: {healthPoints: 80,
+         attackPower: 7,
+         counterAttackPower: 20
         }
 }
 
@@ -48,6 +48,7 @@ loadFunction();
       ourHero = $(this).attr("id");
       $("#" + ourHero + "Box").addClass("hide");
       $("#" + ourHero + "Box").clone().appendTo(".heroBox").removeClass("hide");
+      //$(".heroBox").removeClass("hide");
       $(".mainChar .pictureBox").css({"background-color":"red", "color":"black"});
       $(".instructions").html("Select an Enemy");
       getCharData("hero", ourHero);
@@ -58,8 +59,9 @@ loadFunction();
       ourEnemy = $(this).attr("id");
       $("#" + ourEnemy + "Box").addClass("hide");
       $("#" + ourEnemy + "Box").clone().appendTo(".enemyBox").removeClass("hide").css({"background-color":"black", "color":"white"});
+      $(".enemyBox").removeClass("hide");
       $(".instructions").html("ATTACK!");
-      getCharData("enemy", ourHero);
+      getCharData("enemy", ourEnemy);
       readyForAttack = true;
     }
 
@@ -68,42 +70,61 @@ loadFunction();
  // Attack logic
  $(".attackButton").on("click", function() {
 
+    if (!readyForAttack) {
+      return;
+    }
     //decrease enemy hp by hero attack power
-    enemyHealthPoints -= heroAttackPowerGrow;
+ 
+    enemyHealthPoints-= heroAttackPowerGrow;
 
     //decrease hero hp by enemy attack power
     heroHealthPoints-= enemyCounterAttackPower;
 
     //increase hero total AP by base attack power
-    heroAttackPowerGrow += heroAttackPower;
+    heroAttackPowerGrow+= heroAttackPower;
 
+    console.log()
     //update display hero
-    $("." + ourHero + "Health").html(heroHealthPoints);
+    $(".heroBox #" + ourHero + "Health").html(heroHealthPoints);
 
      //update display enemy
-    $("." + ourEnemy + "Health").html(enemyHealthPoints);
+    $(".enemyBox #" + ourEnemy + "Health").html(enemyHealthPoints);
 
     if (heroHealthPoints <= 0) {
-        loadFunction();
+      // enemy wins
+        $(".heroMsg").html("You have been defeated...Game Over!!!");
+        $(".enemyMsg").html("");
+        // $(".heroBox #" + ourHero + "Box").addClass("hide");
+        // $(".enemyBox #" + ourEnemy + "Box").addClass("hide");
+        $(".restart").removeClass("hide");
         return;
 
     } else if (enemyHealthPoints <= 0 ) {
-        //hero wins - display message 
-
+        //hero wins - display message, hide enemy
+        $(".heroMsg").html("Awesome! You defeated " + ourEnemy + ".  Select another enemy.");
+        $(".enemyMsg").html("");
+        $(".enemyBox #" + ourEnemy + "Box").remove();
+        readyForAttack = false;
 
     } else {
 
       //hero message
-      $(".heroMsg").html("You attacked " + ourEnemy + "for " + heroAttackPowerGrow + "damage.");
+      $(".heroMsg").html("You attacked " + ourEnemy + " for " + heroAttackPowerGrow + " damage.");
     
       //enemy message
-      $(".enemyMsg").html( ourEnemy + " attacked you for " + enemyCounterAttackPower + "damage.");
+      $(".enemyMsg").html( ourEnemy + " attacked you for " + enemyCounterAttackPower + " damage.");
 
     }
-
-
- })
+   }) // *********** end of attack button
  
+    // ********* restart
+    $(".restart").on("click", function() {
+
+      loadFunction();
+      $(".restart").addClass("hide");
+
+
+     })
  //********************************* 
 //**********   functions
 //**********************************
@@ -119,7 +140,12 @@ function loadFunction() {
     $("#" + key + "Health").html(character[key].healthPoints);
   });
 
-
+  $(".heroBox #" + ourHero + "Box").remove();
+  $(".enemyBox #" + ourEnemy + "Box").remove();
+  $(".restart").addClass("hide");
+  $(".heroMsg").html("");
+  $(".pictureBox").removeClass("hide").css({"background-color":"white", "color":"darkblue"});
+ 
   // userTotal = 0;
   // $(".userTotal").html(userTotal);
   // // Store the crystal random number in the data element
@@ -128,7 +154,7 @@ function loadFunction() {
   // randomMatchNo  = (Math.floor(Math.random() * 102) + 19);
   // $(".computerNo").html(randomMatchNo);
 
-}  //**********  end of loadfunction
+}  //**********  end of loadFunction
 
 //Gets important character data from object
 function getCharData(charType, charName) {
