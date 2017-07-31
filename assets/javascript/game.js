@@ -60,7 +60,7 @@ loadFunction();
       ourEnemy = $(this).attr("id");
       $("#" + ourEnemy + "Box").addClass("hide");
       $("#" + ourEnemy + "Box").clone().appendTo(".enemyBox").removeClass("hide").css({"background-color":"black", "color":"white"});
-      $(".enemyBox").removeClass("hide");
+      //$(".enemyBox").removeClass("hide");
       $(".instructions").html("ATTACK!");
       getCharData("enemy", ourEnemy);
       readyForAttack = true;
@@ -136,7 +136,8 @@ loadFunction();
     $(".restart").addClass("hide");
 
    })
- //********************************* 
+
+//********************************* 
 //**********   functions
 //**********************************
 
@@ -164,14 +165,6 @@ function loadFunction() {
   $(".heroMsg").html("");
   $(".pictureBox").removeClass("hide").css({"background-color":"white", "color":"darkblue"});
  
-  // userTotal = 0;
-  // $(".userTotal").html(userTotal);
-  // // Store the crystal random number in the data element
-
-  // //get the random number to be matched
-  // randomMatchNo  = (Math.floor(Math.random() * 102) + 19);
-  // $(".computerNo").html(randomMatchNo);
-
 }  //**********  end of loadFunction
 
 //Gets important character data from object

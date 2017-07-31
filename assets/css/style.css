@@ -10,6 +10,10 @@ body {
     color: white;
 }
 
+.col-md-3point5 {
+  width: 28.75%
+}
+
 .charRow {
   height: 150px;
 
