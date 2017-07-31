@@ -21,19 +21,19 @@ var remainingCharacters = 0;
 var character = {
   leia: {healthPoints: 120,
          attackPower: 10,
-         counterAttackPower: 5
+         counterAttackPower: 20
         },
   hans: {healthPoints: 100,
          attackPower: 15,
-         counterAttackPower: 30
+         counterAttackPower: 20
         },        
   jth: {healthPoints: 110,
-         attackPower: 5,
-         counterAttackPower: 5
+         attackPower: 10,
+         counterAttackPower: 10
         },
   darth: {healthPoints: 80,
          attackPower: 7,
-         counterAttackPower: 5
+         counterAttackPower: 10
         }
 }
 
